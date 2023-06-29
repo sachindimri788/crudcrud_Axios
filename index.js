@@ -39,7 +39,7 @@ function displayData() {
                     let deleteButton = document.createElement('button');
                     deleteButton.textContent = 'Delete';
                     deleteButton.addEventListener('click', function () {
-                        deleteData(index);
+                        deleteData(i);
                     });
                     listItem.appendChild(editButton);
                     listItem.appendChild(deleteButton);
@@ -50,6 +50,23 @@ function displayData() {
             console.error(error);
         });
 
+}
+
+
+function deleteData(i){
+    axios.get('https://crudcrud.com/api/175cb7d131224bbda5681e0370fa6f9e/appointment').then(
+        response=>{
+            const data = response.data;
+            if (data !== null) {
+                id=data[i]._id;
+                axios.delete(`https://crudcrud.com/api/175cb7d131224bbda5681e0370fa6f9e/appointment/${id}`).then(
+                    response =>{
+                        displayData();
+                    }
+                )
+            }
+        }
+    )
 }
 
 displayData();
