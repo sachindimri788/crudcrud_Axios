@@ -1,3 +1,4 @@
+let id="";
 const form = document.getElementById('myForm');
 document.getElementById('myForm').addEventListener('submit', (event) => {
     event.preventDefault();
@@ -7,15 +8,25 @@ document.getElementById('myForm').addEventListener('submit', (event) => {
         name,
         email
     };
+    if(id==''){
     axios.post('https://crudcrud.com/api/175cb7d131224bbda5681e0370fa6f9e/appointment', obj)
         .then(response => {
             displayData();
             form.reset();
-            console.log(response.data);
+        
         })
         .catch(error => {
             console.error(error);
         });
+    }
+    else{
+        axios.put(`https://crudcrud.com/api/175cb7d131224bbda5681e0370fa6f9e/appointment/${id}`, obj)
+        .then(response=>{
+            displayData();
+            form.reset();
+        })
+        id='';
+    }
 });
 
 function displayData() {
@@ -69,4 +80,17 @@ function deleteData(i){
     )
 }
 
+function editData(i){
+    axios.get('https://crudcrud.com/api/175cb7d131224bbda5681e0370fa6f9e/appointment').then(
+        response=>{
+            const data = response.data;
+            if (data !== null) {
+                document.getElementById('name').value=data[i].name;
+                document.getElementById('email').value=data[i].email;
+                id=data[i]._id;
+            }
+        }
+    )
+
+}
 displayData();
